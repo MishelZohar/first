@@ -39,7 +39,6 @@ function playRound(playerSelection, computerSelection){
     else{
         winState = "That's a tie";
     }
-    console.log(lowerPlayerSelection +"   "+ computerSelection);
     return winState;
 }
 
