@@ -1,5 +1,5 @@
 function getComputerChoice(){
-    let rnd = Math.floor(Math.random * 3) // Returns a random int between 0-2
+    let rnd = Math.floor(Math.random() * 3) // Returns a random int between 0-2
     let choice;
     if(rnd === 0){
         choice = "rock";
@@ -27,34 +27,71 @@ function playRound(playerSelection, computerSelection){
     else if(lowerPlayerSelection === "scissors" && computerSelection === "paper"){
         winState = "You Win! Scissors beats Paper";
     }
-    else if(lowerPlayerSelection === "scissors" && computerSelection === "rock")
-    {
+    else if(lowerPlayerSelection === "paper" && computerSelection === "scissors"){
         winState = "You Lose! Scissors beats Paper";
     }
     else if(lowerPlayerSelection === "rock" && computerSelection === "paper"){
         winState = "You Lose! Paper beats Rock";
     }
-    else{
+    else if(lowerPlayerSelection === "scissors" && computerSelection === "rock"){
         winState = "You Lose! Rock beats Scissors";
     }
+    else{
+        winState = "That's a tie";
+    }
+    console.log(lowerPlayerSelection +"   "+ computerSelection);
     return winState;
 }
 
+function game(e){
 
-function game(){
-    let score = 0;
-    let winState;
-    for (let i = 0; i < 5; i++) {
-        const playerSelection = prompt("Please enter Rock, Paper or Scissors");
-        const computerSelection = getComputerChoice();
-        winState = playRound(playerSelection, computerSelection);
-        if (winState[4] === "W"){
-            score +=1 ;
-        }    
-        console.log(winState);
+
+    if(e.target.nodeName === 'BUTTON'){
+        let win = playRound(e.srcElement.id, getComputerChoice());
+        if(win[4] === "W"){
+            playerScore++;
+        }
+        else if(win[4] === "L"){
+            computerScore++;
+        }
+        div.innerHTML = win + "<br>Your Score: " + playerScore + "<br>Computer Score: " + computerScore;
+        if(playerScore === 5){
+            div.innerHTML = "You Win!";
+            return;
+        }
+        if(computerScore === 5){
+            div.innerHTML = "You Lose!";
+            return;
+        }
+
+        body.appendChild(div);
     }
-    console.log(score);
 }
 
+let playerScore = 0;
+let computerScore = 0;
 
-game();
+const body = document.querySelector("#bod");
+
+const rock = document.createElement("button");
+const paper = document.createElement("button");
+const scissors = document.createElement("button");
+
+rock.textContent = "Rock";
+rock.id = "rock";
+
+paper.textContent = "Paper";
+paper.id = "paper";
+
+scissors.textContent = "Scissors";
+scissors.id = "scissors";
+
+body.appendChild(rock);
+body.appendChild(paper);
+body.appendChild(scissors);
+
+const div = document.createElement("div");
+
+
+window.addEventListener('click', game);
+
